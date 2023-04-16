@@ -1,7 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
+
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+
+      /*reset */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+
+}
 /* Define the style for each slide */
 .slide {
   height: 100vh;
@@ -21,29 +58,67 @@
 .slides-container > * {
   scroll-snap-align: start;
 }
+
+.arrow {
+  font-size:40px;
+  position:absolute;
+  bottom:10px;
+  left:50%;
+  cursor: pointer;
+}
     </style>
 
   </head>
   <body>
     <div class="slides-container">
-      <div class="slide" style="background-color: red;">
+      <div class="slide" style="background-color: #CCC5B9;">
         <h1>Slide 1</h1>
+        <div class="arrow">V</div>
       </div>
-      <div class="slide" style="background-color: blue;">
+      <div class="slide" style="background-color: #252422;">
         <h1>Slide 2</h1>
+        <div class="arrow">V</div>
       </div>
-      <div class="slide" style="background-color: green;">
-        <h1>Slide 3</h1>
+      <div class="slide" style="background-color: #EB5E28;">
+        <h1>Slide 3</h1><div class="arrow">V</div>
       </div>
     </div>
-    
+
     <script>
-      const container = document.querySelector('.slides-container');
+const container = document.querySelector('.slides-container');
 const slides = document.querySelectorAll('.slide');
+const arrows = document.querySelectorAll('.arrow');
 
 let currentSlide = 0;
+let isScrolling = false;
 
+// Function to scroll to the next slide
+function scrollToNextSlide() {
+  // Calculate the next slide index
+  currentSlide = Math.max(0, Math.min(currentSlide + 1, slides.length - 1));
+
+  // Scroll to the next slide
+  container.scrollTo({
+    top: slides[currentSlide].offsetTop,
+    behavior: 'smooth'
+  });
+
+  // Set the scrolling flag
+  isScrolling = true;
+
+  // Reset the scrolling flag after the scroll has completed
+  setTimeout(() => {
+    isScrolling = false;
+  }, 300);
+}
+
+// Add event listener for the wheel event
 container.addEventListener('wheel', (event) => {
+  // Check if a scroll is currently in progress
+  if (isScrolling) {
+    return;
+  }
+
   // Determine the direction of the scroll
   const direction = Math.sign(event.deltaY);
 
@@ -56,8 +131,40 @@ container.addEventListener('wheel', (event) => {
     behavior: 'smooth'
   });
 
+  // Set the scrolling flag
+  isScrolling = true;
+
+  // Reset the scrolling flag after the scroll has completed
+  setTimeout(() => {
+    isScrolling = false;
+  }, 300);
+
   // Prevent the default scroll behavior
   event.preventDefault();
+});
+
+// Add event listener for the keydown event
+document.addEventListener('keydown', (event) => {
+  // Check if a scroll is currently in progress or if the pressed key is not the down arrow key
+  if (isScrolling || event.key !== 'ArrowDown') {
+    return;
+  }
+
+  // Scroll to the next slide
+  scrollToNextSlide();
+});
+
+// Add event listeners for the click event on each arrow element
+arrows.forEach((arrow) => {
+  arrow.addEventListener('click', () => {
+    // Check if a scroll is currently in progress
+    if (isScrolling) {
+      return;
+    }
+
+    // Scroll to the next slide
+    scrollToNextSlide();
+  });
 });
 </script>
   </body>
