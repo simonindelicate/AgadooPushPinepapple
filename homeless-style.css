@@ -1,0 +1,19 @@
+/* Define the style for each slide */
+.slide {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Define the style for the container that holds all the slides */
+.slides-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y proximity;
+}
+
+/* Define the style for the transition between slides */
+.slides-container > * {
+  scroll-snap-align: start;
+}

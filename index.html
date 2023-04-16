@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+/* Define the style for each slide */
+.slide {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Define the style for the container that holds all the slides */
+.slides-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+/* Define the style for the transition between slides */
+.slides-container > * {
+  scroll-snap-align: start;
+}
+    </style>
+
+  </head>
+  <body>
+    <div class="slides-container">
+      <div class="slide" style="background-color: red;">
+        <h1>Slide 1</h1>
+      </div>
+      <div class="slide" style="background-color: blue;">
+        <h1>Slide 2</h1>
+      </div>
+      <div class="slide" style="background-color: green;">
+        <h1>Slide 3</h1>
+      </div>
+    </div>
+    
+    <script>
+      const container = document.querySelector('.slides-container');
+const slides = document.querySelectorAll('.slide');
+
+let currentSlide = 0;
+
+container.addEventListener('wheel', (event) => {
+  // Determine the direction of the scroll
+  const direction = Math.sign(event.deltaY);
+
+  // Calculate the next slide index
+  currentSlide = Math.max(0, Math.min(currentSlide + direction, slides.length - 1));
+
+  // Scroll to the next slide
+  container.scrollTo({
+    top: slides[currentSlide].offsetTop,
+    behavior: 'smooth'
+  });
+
+  // Prevent the default scroll behavior
+  event.preventDefault();
+});
+</script>
+  </body>
+</html>
